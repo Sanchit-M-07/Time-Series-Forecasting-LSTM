@@ -1,3 +1,10 @@
+"""
+This module implements a SimpleLSTMCell and a TimeSeriesLSTM model for
+univariate time series forecasting using NumPy. It includes methods for
+single-step forward passes, rolling over input sequences, and multi-step
+forecasting by iteratively feeding back predictions as new inputs.
+"""
+
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
