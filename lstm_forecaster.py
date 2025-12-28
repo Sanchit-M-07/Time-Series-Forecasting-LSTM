@@ -136,4 +136,27 @@ if __name__ == "__main__":
     data_scaled = scaler.fit_transform(data.reshape(-1, 1)).flatten()
     
     # Create sequences
-    model = TimeSeriesLSTM(sequence_length=10, n_
+    model = TimeSeriesLSTM(sequence_length=10, n__features=50, learning_rate=0.01)
+    
+    print("Training LSTM Model...")
+    X_train, y_train = model.create_sequences(data_scaled)
+    model.fit(X_train, y_train, epochs=50)
+    
+    # Make predictions
+    X_test = X_train[-20:]
+    predictions = model.predict(X_test)
+    
+    # Inverse transform predictions
+    predictions_rescaled = scaler.inverse_transform(predictions.reshape(-1, 1)).flatten()
+    
+    # Evaluate
+    y_test_rescaled = scaler.inverse_transform(y_train[-20:].reshape(-1, 1)).flatten()
+    
+    rmse = np.sqrt(mean_squared_error(y_test_rescaled, predictions_rescaled))
+    mae = mean_absolute_error(y_test_rescaled, predictions_rescaled)
+    
+    print(f"\nTest RMSE: {rmse:.4f}")
+    print(f"Test MAE: {mae:.4f}")
+    print(f"\nPredictions: {predictions_rescaled[:5]}")
+    print(f"Actual Values: {y_test_rescaled[:5]}")
+
